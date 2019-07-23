@@ -1,0 +1,236 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.clearfix:after{
+    content: "020";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+.clearfix {
+    zoom: 1;
+}
+
+.main{
+    width: 100%;
+    height: 100%;
+}
+
+.wrap{
+    width: 100%;
+    height: 100%;
+    max-width: 1160px;
+    margin:0 auto;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+/* ======== 第一栏 - 标题栏 ======== */
+.top{
+    width: 100%;
+    height: 60px;
+    #background-color: pink;
+    margin-top: 20px;
+}
+
+.top div {
+  float: left;
+}
+
+/* 头像与用户 */
+.user-home {
+  width: 270px;
+  height: 60px;
+  #background-color: grey;
+  text-align: center;
+  margin-left: 40px;
+}
+
+.user-home-text {
+  font-size: 20px;
+  color: white;
+  line-height: 60px;
+  margin-left: 20px;
+}
+
+
+/* 显示标题头 */
+.show-header {
+  width: 100px;
+  height: 60px;
+  #background-color: red;
+  text-align: center;
+  position: relative;
+  left: 40px;
+}
+
+.show-header span {
+  #background-color: grey;
+  font-size: 20px;
+  position: relative;
+  color: white;
+  top: 15px;
+}
+
+
+/* 显示日期 */
+.show-date {
+  width: 200px;
+  height: 60px;
+  #background-color: grey;
+  position: relative;
+  left: 110px;
+}
+
+#date{
+  color: white;
+}
+
+#lunar{
+  color: white;
+}
+
+.show-time {
+  width: 100px;
+  height: 100%;
+  #background-color: grey;
+  position: relative;
+  left: 130px;
+  top: -8px;
+}
+
+.show-time span {
+  font-size: 50px;
+  color: white;
+  width: 100%;
+  height: 100%;
+}
+
+.weather {
+  width: 200px;
+  height: 60px;
+  #background-color: red;
+  text-align: center;
+  position: relative;
+  left: 180px;
+}
+
+#wendu {
+  font-size: 20px;
+}
+
+#tianqi {
+  font-size: 15px;
+}
+
+#city {
+  font-size: 15px;
+}
+
+.weather span {
+  #font-size: 15px;
+  color: white;
+}
+
+.weather_img {
+  width: 60px;
+  height: 60px;
+  position: relative;
+  left: 150px;
+  #background-color: grey;
+}
+
+.weather_img img {
+  width: 100%;
+  height: 100%;
+}
+/* ====END 第一栏 - 标题栏 END==== */
+
+
+
+/* ======== 第二栏 - 表格栏 ======== */
+table {
+  width: 90%;
+  border-width: 1px;
+  border-color: white;
+  border-style: solid;
+  text-align: center;
+  margin-left: 40px;
+  margin-top: 20px;
+  color: white;
+}
+
+table, th {
+  border-width: 1px;
+  padding: 8px;
+  border-style: solid;
+  border-color: white;
+}
+
+table,td {
+  border-width: 1px;
+  padding: 8px;
+  border-style: solid;
+  border-color: white;
+  border-spacing: 10px;
+}
+
+.table-show {
+  width: 100%;
+  position: relative;
+  #background-color: grey;
+  margin-left: 10px;
+}
+
+
+
+.button-operation-on {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  border-radius: 10%;
+  color: white;
+  padding: 7px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 10px;
+}
+
+.button-operation-off {
+  background-color: #f44336; /* Red */
+  border: none;
+  border-radius: 10%;
+  color: white;
+  padding: 7px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 10px;
+}
+
+.button-status-on {
+  width: 25px;
+  height: 25px;
+  background-color: #4CAF50; /* Green */
+  border: none;
+  border-radius: 50%;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+
+
+
+
+
+
+
+
+

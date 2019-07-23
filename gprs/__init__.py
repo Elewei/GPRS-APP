@@ -1,7 +1,7 @@
 import os
 
 from flask import Flask
-
+from . import main
 
 def create_app(test_config=None):
     # create and configure the app
@@ -24,9 +24,9 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    # a simple page that says hello
-    @app.route('/hello')
-    def hello():
-        return 'Hello, World!'
+
+    app.register_blueprint(main.bp)
+    
+    app.add_url_rule('/', endpoint=main.index)
 
     return app

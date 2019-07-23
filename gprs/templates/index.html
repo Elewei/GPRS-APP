@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block head %}
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+{% endblock %}
+
+
+{% block title %}主页{% endblock %}
+
+{% block body %}
+
+<div class="main">
+  <div class="wrap">
+	<!-- 第一栏  -->
+	<div class="top">
+		<!-- 头像与文字描述 -->
+		<div class="user-home">
+			<span class="user-home-text">苏州雪亭智能科技有限公司</span>
+		</div>
+
+		<!-- 显示当前页面标题 -->
+		<div class="show-header">
+			<span>GPRS</span>
+		</div>
+
+		<!-- 显示当前日期 -->
+		<div class="show-date">
+			<span id="date" style="font-size: 20px;"></span>  <br>
+			<span id="lunar" style="font-size: 15px;">甲午【马】年六月二十</span>
+		</div>
+
+		<!-- 显示当前时间 -->
+		<div class="show-time">
+			<span id="clock-time">22:45:45</span>
+		</div>
+
+		<!-- 显示当前天气 -->
+		<div class="weather">
+			<span id="wendu">18℃-30℃</span> <br />
+			<span id="tianqi">晴</span>
+			<span id="city">苏州</span>
+		</div>
+
+		<div class="weather_img">
+			<img id="weatherPic" src="{{ url_for('static', filename='img/weather/sunny.png') }}" alt="天气图标">
+		</div>
+	</div>
+
+
+	<div class="table-show">
+		<table class="device-manage-table">
+			<tr>
+				<th>序号</th>
+				<th>设备ID</th>
+				<th>设备位置</th>
+				<th>探头温度</th>
+				<th>接触温度</th>
+				<th>电量</th>
+				<th>操作</th>
+				<th>状态</th>
+			</tr>
+			<tr>
+				<td>1</td>
+				<td>4a0006f5a4c0</td>
+				<td>38.6518,104.07642</td>
+				<td>32.5 °C</td>
+				<td>40.2 °C</td>
+				<td>90%</td>
+				<td>
+					<button id="open" class="button-operation-on" type="button">开</button>
+				</td>
+				<td>
+					<button id="open-status" class="button-status-on" type="button"></button>
+				</td>
+			</tr>
+		</table>	
+	</div>
+  </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+  <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/chinatime.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/weather.js') }}"></script>
+  <script type=text/javascript>
+  	$SCRIPT_ROOT = {{ request.script_root | tojson | safe }};
+
+
+  </script>
+{% endblock %}
