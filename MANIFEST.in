@@ -1,0 +1,3 @@
+graft gprs/static
+graft gprs/templates
+global-exclude *.pyc
