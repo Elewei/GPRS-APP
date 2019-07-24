@@ -2,6 +2,7 @@ import os
 
 from flask import Flask
 from . import main
+from sockserv import SocketServer
 
 def create_app(test_config=None):
     # create and configure the app
@@ -23,6 +24,9 @@ def create_app(test_config=None):
         os.makedirs(app.instance_path)
     except OSError:
         pass
+
+    server = SocketServer()
+    server.run_server()
 
     app.register_blueprint(main.bp)
     
