@@ -15,7 +15,7 @@
 
 		{% block head %}{% endblock %}
 
-		<title>{% block title %}{% endblock %} - 智能家居</title>
+		<title>GPRS温度计</title>
 	</head>
 
 	<body scroll="no" ondragstart="return false">
@@ -26,8 +26,7 @@
 
 		<script src="{{ url_for('static', filename='js/popper.js') }}"></script>
 		<script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
-  	<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-		<script src="{{ url_for('static', filename='js/echarts.min.js') }}"></script>
+  		<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
 		<!-- Optional JavaScript -->
 		{% block script %}{% endblock %}
 	</body>
