@@ -59,3 +59,10 @@ class SocketServer:
         client_sock.close()
         return 0
  
+def main():
+    server = SocketServer()
+    server.run_server()
+    print 'Exiting'
+ 
+if __name__ == "__main__":
+    main()

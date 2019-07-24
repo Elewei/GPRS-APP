@@ -2,7 +2,7 @@ import os
 
 from flask import Flask
 from . import main
-from sockserv import SocketServer
+from . import sockserv
 
 def create_app(test_config=None):
     # create and configure the app
@@ -25,7 +25,7 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    server = SocketServer()
+    server = SocketServer.SocketServer()
     server.run_server()
 
     app.register_blueprint(main.bp)
