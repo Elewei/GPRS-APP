@@ -2,8 +2,6 @@ import os
 import time, threading
 from flask import Flask
 from . import main
-from . import sockserv
-
 
 def startServer():
     serv = sockserv.TCPServer()
@@ -31,8 +29,7 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    t = threading.Thread(target=startServer, name='startServ')
-    t.start()
+
 
     app.register_blueprint(main.bp)
     
