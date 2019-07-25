@@ -2,7 +2,10 @@
 '''
 https://blog.csdn.net/m0_37714245/article/details/81809341
 '''
+import socket
 from flask import g
+
+
 
 class TCPServer(object):
     def __init__(self, host = "0.0.0.0", port = 12138):
