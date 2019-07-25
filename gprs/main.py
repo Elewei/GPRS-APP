@@ -10,12 +10,12 @@ bp = Blueprint('main', __name__)
 
 
 def startServer():
-	serv = TCPServer()
-	serv.run_forever()
+    serv = TCPServer()
+    serv.run_forever()
 
 
 @bp.route('/')
 def index():
-	t = threading.Thread(target=startServer, name='startServ')
-	t.start()
+    t = threading.Thread(target=startServer, name='startServ')
+    t.start()
     return render_template('index.html')
