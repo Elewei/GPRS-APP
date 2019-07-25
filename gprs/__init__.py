@@ -1,10 +1,10 @@
 import os
 from flask import Flask, g
 from socketserver import ThreadingTCPServer
-from socketserver import BaseRequestHandler, TCPServer
+from socketserver import StreamRequestHandler, TCPServer
 from . import main
 
-class EchoHandler(BaseRequestHandler):
+class EchoHandler(StreamRequestHandler):
     def handle(self):
         print('Got connection from', self.client_address)
         
