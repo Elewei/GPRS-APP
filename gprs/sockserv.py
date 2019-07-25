@@ -2,9 +2,6 @@
 '''
 https://blog.csdn.net/m0_37714245/article/details/81809341
 '''
-
-import socket
-import threading
 from flask import g
 
 class TCPServer(object):
@@ -27,12 +24,12 @@ class TCPServer(object):
             if receive_data:
                 print(receive_data)
                 data = receive_data.split(',')
-                g.addr = data[1]
-                g.longitude = data[3]
-                g.latitude = data[4]
-                g.tantou = data[5]
-                g.jiechu = datap[6]
-                g.dianliang = data[7]
+                #g.addr = data[1]
+                #g.longitude = data[3]
+                #g.latitude = data[4]
+                #g.tantou = data[5]
+                #g.jiechu = datap[6]
+                #g.dianliang = data[7]
 
             else:
                 print('Device {0} Disconnected...'.format(client_addr))
