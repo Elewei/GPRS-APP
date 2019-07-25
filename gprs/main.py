@@ -3,14 +3,14 @@ import time, threading
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
-from sockserv import TCPServer
+from . import sockserv
 
 
 bp = Blueprint('main', __name__)
 
 
 def startServer():
-    serv = TCPServer()
+    serv = sockserv.TCPServer()
     serv.run_forever()
 
 
