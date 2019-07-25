@@ -10,9 +10,8 @@ bp = Blueprint('main', __name__)
 
 
 def startServer():
-	"""创建一个TCP服务器"""
-    serv = TCPServer()
-    serv.run_forever()
+	serv = TCPServer()
+	serv.run_forever()
 
 
 @bp.route('/')
