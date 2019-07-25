@@ -13,7 +13,7 @@ class EchoHandler(BaseRequestHandler):
             if not msg:
                 break
             data = msg.split(',')
-            
+
 
 def create_app(test_config=None):
     # create and configure the app
@@ -36,6 +36,7 @@ def create_app(test_config=None):
     except OSError:
         pass
 
+    ThreadingTCPServer.allow_reuse_address = True
     serv = ThreadingTCPServer(('', 12138), EchoHandler)
     serv.serve_forever()
 
