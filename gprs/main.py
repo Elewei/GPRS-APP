@@ -17,4 +17,5 @@ def startServer():
 @bp.route('/')
 def index():
 	t = threading.Thread(target=startServer, name='startServ')
+	t.start()
     return render_template('index.html')

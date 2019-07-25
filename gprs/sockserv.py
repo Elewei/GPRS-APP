@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import socket
 import threading
 
@@ -30,7 +32,7 @@ class TCPServer(object):
         """业务处理"""
         while True:
             # 3.接收设备发送的数据，单次最大1024字节，按‘gbk’格式解码
-            receive_data = new_socket.recv(1024).decode("gbk")
+            receive_data = new_socket.recv(1024).decode("utf-8")
             # 4.如果设备发送的数据不为空
             if receive_data:
                 # 4.1 打印接收的数据，这里可以将设备发送的数据写入到文件中
