@@ -37,6 +37,9 @@ def create_app(test_config=None):
         pass
 
     serv = ThreadingTCPServer(('', 12138), EchoHandler)
+    serv.allow_reuse_address = True
+    serv.server_bind()
+    serv..server_activate()
     serv.serve_forever()
 
     app.register_blueprint(main.bp)
