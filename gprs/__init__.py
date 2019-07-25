@@ -30,7 +30,8 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    startServer()
+    tcp_server = Process(target=startServer)
+    tcp_server.start()
 
     app.register_blueprint(main.bp)
     
