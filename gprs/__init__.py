@@ -1,12 +1,18 @@
 import os
-from multiprocessing import Process
 from flask import Flask
+from socketserver import ThreadingTCPServer
+from socketserver import BaseRequestHandler, TCPServer
 from . import main
-from . import sockserv
 
-def startServer():
-    serv = sockserv.TCPServer()
-    serv.run_forever()
+class EchoHandler(BaseRequestHandler):
+    def handle(self):
+        print('Got connection from', self.client_address)
+        
+        while True:
+            msg = self.request.recv(8192)
+            if not msg:
+                break
+            print(msg)
 
 
 def create_app(test_config=None):
@@ -30,8 +36,8 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    tcp_server = Process(target=startServer)
-    tcp_server.start()
+    serv = ThreadingTCPServer(('', 12138), EchoHandler)
+    serv.serve_forever()
 
     app.register_blueprint(main.bp)
     
