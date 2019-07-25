@@ -2,6 +2,13 @@ import os
 
 from flask import Flask
 from . import main
+from . import sockserv
+
+
+def startServer():
+    serv = sockserv.TCPServer()
+    serv.run_forever()
+
 
 def create_app(test_config=None):
     # create and configure the app
@@ -23,6 +30,9 @@ def create_app(test_config=None):
         os.makedirs(app.instance_path)
     except OSError:
         pass
+
+    t = threading.Thread(target=startServer, name='startServ')
+    t.start()
 
     app.register_blueprint(main.bp)
     
