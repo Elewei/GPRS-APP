@@ -12,7 +12,7 @@ class EchoHandler(StreamRequestHandler):
             msg = self.request.recv(8192)
             if not msg:
                 break
-            data = msg.split(',')
+            data = msg.decode().strip().split(',')
 
 
 def create_app(test_config=None):
