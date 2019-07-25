@@ -1,5 +1,5 @@
 import os
-from flask import Flask
+from flask import Flask, g
 from socketserver import ThreadingTCPServer
 from socketserver import BaseRequestHandler, TCPServer
 from . import main
@@ -12,8 +12,8 @@ class EchoHandler(BaseRequestHandler):
             msg = self.request.recv(8192)
             if not msg:
                 break
-            print(msg)
-
+            data = msg.split(',')
+            
 
 def create_app(test_config=None):
     # create and configure the app
@@ -37,9 +37,6 @@ def create_app(test_config=None):
         pass
 
     serv = ThreadingTCPServer(('', 12138), EchoHandler)
-    serv.allow_reuse_address = True
-    serv.server_bind()
-    serv..server_activate()
     serv.serve_forever()
 
     app.register_blueprint(main.bp)
