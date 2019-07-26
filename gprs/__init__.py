@@ -14,7 +14,9 @@ class EchoHandler(StreamRequestHandler):
             msg = self.request.recv(8192)
             if not msg:
                 break
+            print(msg)
             data = msg.decode().strip().split(',')
+            print(data)
 
 
 def start_server():
