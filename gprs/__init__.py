@@ -16,7 +16,9 @@ class EchoHandler(StreamRequestHandler):
                 break
             print(msg)
             data = msg.decode().strip().split(',')
-            print(data)
+            if 'data' not in g:
+                g.data = data
+
 
 
 def start_server():
@@ -46,11 +48,11 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    server= threading.Thread(target=start_server)
-    server.start()
+    with app.app_context():
+        server= threading.Thread(target=start_server)
+        server.start()
 
     app.register_blueprint(main.bp)
-    
     app.add_url_rule('/', endpoint=main.index)
 
     return app

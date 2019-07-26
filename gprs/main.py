@@ -8,5 +8,8 @@ bp = Blueprint('main', __name__)
 
 @bp.route('/')
 def index():
-    print(g)
+    
+    if 'data' in g:
+        print(g.data)
+    
     return render_template('index.html')
