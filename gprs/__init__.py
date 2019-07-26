@@ -15,6 +15,12 @@ class EchoHandler(StreamRequestHandler):
             data = msg.decode().strip().split(',')
 
 
+def start_server():
+    ThreadingTCPServer.allow_reuse_address = True
+    serv = ThreadingTCPServer(('', 12138), EchoHandler)
+    serv.serve_forever()    
+
+
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
@@ -36,9 +42,8 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    ThreadingTCPServer.allow_reuse_address = True
-    serv = ThreadingTCPServer(('', 12138), EchoHandler)
-    serv.serve_forever()
+    server= threading.Thread(target=start_server)
+    server.start()
 
     app.register_blueprint(main.bp)
     
