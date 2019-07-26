@@ -1,7 +1,7 @@
 import os
 import time
 import threading
-from flask import Flask, g
+from flask import Flask, session
 from socketserver import ThreadingTCPServer
 from socketserver import StreamRequestHandler, TCPServer
 from . import main
@@ -16,8 +16,8 @@ class EchoHandler(StreamRequestHandler):
                 break
             print(msg)
             data = msg.decode().strip().split(',')
-            if 'data' not in g:
-                g.data = data
+            if 'data' not NULL:
+                session['data'] = data
 
 
 
@@ -48,9 +48,8 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    with app.app_context():
-        server= threading.Thread(target=start_server)
-        server.start()
+    server= threading.Thread(target=start_server)
+    server.start()
 
     app.register_blueprint(main.bp)
     app.add_url_rule('/', endpoint=main.index)
