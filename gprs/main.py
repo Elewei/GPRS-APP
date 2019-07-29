@@ -19,11 +19,11 @@ def index():
         'dianliang': '90'
     }
 
-    #file_name = os.getcwd() + "/data"
-    #fp_r = open(file_name, 'r')
-    #line_r = fp_r.readline() 
-    #if line_r != '':
-    #    print(line_r)
-    #    fp_r.seek(0,2)
+    file_name = os.getcwd() + "/data.txt"
+    fp_r = open(file_name, 'r')
+    line_r = fp_r.readline() 
+    if line_r != '':
+        print(line_r)
+        fp_r.seek(0,2)
 
     return render_template('index.html', data = device_data)
