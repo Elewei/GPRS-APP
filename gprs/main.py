@@ -8,7 +8,4 @@ bp = Blueprint('main', __name__)
 
 @bp.route('/')
 def index():
-    
-    data = session.get("data")
-    print(data)
     return render_template('index.html')

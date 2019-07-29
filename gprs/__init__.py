@@ -1,30 +1,6 @@
 import os
-import time
-import threading
-from flask import Flask, session
-from socketserver import ThreadingTCPServer
-from socketserver import StreamRequestHandler, TCPServer
+from flask import Flask
 from . import main
-
-class EchoHandler(StreamRequestHandler):
-    def handle(self):
-        print('Got connection from', self.client_address)
-        
-        while True:
-            msg = self.request.recv(8192)
-            if not msg:
-                break
-            print(msg)
-            data = msg.decode().strip().split(',')
-            if 'data' not NULL:
-                session['data'] = data
-
-
-
-def start_server():
-    ThreadingTCPServer.allow_reuse_address = True
-    serv = ThreadingTCPServer(('', 12138), EchoHandler)
-    serv.serve_forever()
 
 
 def create_app(test_config=None):
@@ -47,9 +23,6 @@ def create_app(test_config=None):
         os.makedirs(app.instance_path)
     except OSError:
         pass
-
-    server= threading.Thread(target=start_server)
-    server.start()
 
     app.register_blueprint(main.bp)
     app.add_url_rule('/', endpoint=main.index)
