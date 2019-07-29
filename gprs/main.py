@@ -8,7 +8,18 @@ from flask import (
 
 bp = Blueprint('main', __name__)
 
-def read_data(device_data):
+
+device_data = {
+    'id' : 1,
+    'device_id' : '07:24:4a:4a:6c:22',
+    'location': '38.6518,104.07642',
+    'tantou_wendu': '32.5',
+    'jiechu_wendu' : '40.2',
+    'dianliang': '90'
+}
+
+
+def read_data():
     
     file_name = os.getcwd() + "/data.txt"
     with open(file_name, 'r') as f:
@@ -26,22 +37,14 @@ def read_data(device_data):
         device_data['dianliang'] = str_data[-1]
 
     global timer
-    timer = threading.Timer(1, read_data, args=(device_data))
+    timer = threading.Timer(2, read_data)
     timer.start()
 
 
 @bp.route('/')
 def index():
-    device_data = {
-        'id' : 1,
-        'device_id' : '07:24:4a:4a:6c:22',
-        'location': '38.6518,104.07642',
-        'tantou_wendu': '32.5',
-        'jiechu_wendu' : '40.2',
-        'dianliang': '90'
-    }
 
-    timer = threading.Timer(1, read_data, args=(device_data))
+    timer = threading.Timer(1, read_data)
     timer.start()
 
     return render_template('index.html', data = device_data)
