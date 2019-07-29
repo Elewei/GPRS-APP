@@ -50,10 +50,9 @@ class SocketServer:
                         stop = True
                     else:
                         print('>>> Received: {}'.format(read_data.rstrip()))
-                        if read_data.rstrip() == 'quit':
-                            stop = True
-                        else:
-                            client_sock.send(read_data)
+                        f = open("data.txt"，"a+")
+                        f.write(format(read_data.rstrip()))
+                        f.close()
             else:
                 print("No client is connected, SocketServer can't receive data")
                 stop = True
