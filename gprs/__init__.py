@@ -1,4 +1,4 @@
-import os
+import os, time, sys
 import threading
 import select
 import socket
@@ -51,10 +51,11 @@ class SocketServer:
                     else:
                         str = format(read_data.rstrip()) + '\n'
                         print(str)
-                        filepath = os.getcwd() + "/data.txt"
-                        f = open(filepath, "a+")
-                        f.write(str)
-                        f.close()
+                        pipe_name = os.getcwd() + "/data"
+                        if not os.path.exists(pipe_name):
+                            os.mkfifo(pipe_name) 
+                        pipeout = os.open(pipe_name, os.O_WRONLY)
+                        os.write(pipeout, str)
             else:
                 print("No client is connected, SocketServer can't receive data")
                 stop = True
