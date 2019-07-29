@@ -20,10 +20,9 @@ def index():
     }
 
     file_name = os.getcwd() + "/data.txt"
-    fp_r = open(file_name, 'r')
-    line_r = fp_r.readline() 
-    if line_r != '':
-        print(line_r)
-        fp_r.seek(0,2)
+    with open(file_name, 'r') as f:
+        last_line = lines[-1] #取最后一行
+        print('last line:')
+        print(last_line)
 
     return render_template('index.html', data = device_data)
