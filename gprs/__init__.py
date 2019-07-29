@@ -50,7 +50,6 @@ class SocketServer:
                         stop = True
                     else:
                         str = format(read_data.rstrip()) + '\n'
-                        bytes.decode(str)
                         print(str)
                         filepath = os.getcwd() + "/data.txt"
                         f = open(filepath, "a+")
