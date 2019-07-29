@@ -45,8 +45,8 @@
 
 /* 头像与用户 */
 .user-home {
-  width: 270px;
-  height: 60px;
+  width: 75px;
+  height: 75px;
   #background-color: grey;
   text-align: center;
   margin-left: 40px;
@@ -54,6 +54,7 @@
 
 .logo {
   width: 75px;
+  height: 75px;
 }
 
 
