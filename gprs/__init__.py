@@ -1,68 +1,73 @@
 import os
 import threading
+import select
 import socket
 from multiprocessing import Process
 from flask import Flask
 from . import main
 
-encoding = 'utf-8'
-BUFSIZE = 1024
-
-# a read thread, read data from remote
-class Reader(threading.Thread):
-    def __init__(self, client):
-        threading.Thread.__init__(self)
-        self.client = client
-        
-    def run(self):
-        while True:
-            data = self.client.recv(BUFSIZE)
-            if(data):
-                string = bytes.decode(data, encoding)
-                print(string, end='')
-            else:
-                break
-        print("close:", self.client.getpeername())
-        
-    
-    def readline(self):
-        rec = self.inputs.readline()
-        if rec:
-            string = bytes.decode(rec, encoding)
-            if len(string)>2:
-                string = string[0:-2]
-            else:
-                string = ' '
-        else:
-            string = False
-        return string
-
-
-
-# a listen thread, listen remote connect
-# when a remote machine request to connect, it will create a read thread to handle
-class Listener(threading.Thread):
-    def __init__(self, port):
-        threading.Thread.__init__(self)
-        self.port = port
+class SocketServer:
+    """ Simple socket server that listens to one single client. """
+    def __init__(self, host = '0.0.0.0', port = 12138):
+        """ Initialize the server with a host and port to listen to. """
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        self.sock.bind(("0.0.0.0", port))
-        self.sock.listen(0)
-    
-    def run(self):
-        print("listener started")
-        while True:
-            client, cltadd = self.sock.accept()
-            Reader(client).start()
-            cltadd = cltadd
-            print("accept a connect")
+        self.host = host
+        self.port = port
+        self.sock.bind((host, port))
+        self.sock.listen(1)
+ 
+    def close(self):
+        """ Close the server socket. """
+        print('Closing server socket (host {}, port {})'.format(self.host, self.port))
+        if self.sock:
+            self.sock.close()
+            self.sock = None
+ 
+    def run_server(self):
+        """ Accept and handle an incoming connection. """
+        print('Starting socket server (host {}, port {})'.format(self.host, self.port))
+ 
+        client_sock, client_addr = self.sock.accept()
+ 
+        print('Client {} connected'.format(client_addr))
+ 
+        stop = False
+        while not stop:
+            if client_sock:
+                # Check if the client is still connected and if data is available:
+                try:
+                    rdy_read, rdy_write, sock_err = select.select([client_sock,], [], [])
+                except select.error:
+                    print('Select() failed on socket with {}'.format(client_addr))
+                    return 1
+ 
+                if len(rdy_read) > 0:
+                    read_data = client_sock.recv(255)
+                    # Check if socket has been closed
+                    if len(read_data) == 0:
+                        print('{} closed the socket.'.format(client_addr))
+                        stop = True
+                    else:
+                        print('>>> Received: {}'.format(read_data.rstrip()))
+                        if read_data.rstrip() == 'quit':
+                            stop = True
+                        else:
+                            client_sock.send(read_data)
+            else:
+                print("No client is connected, SocketServer can't receive data")
+                stop = True
+ 
+        # Close socket
+        print('Closing connection with {}'.format(client_addr))
+        client_sock.close()
+        return 0
 
 
 
 def start_server():
-    lst  = Listener(12138)   # create a listen thread
-    lst.start() # then start
+    lst = SocketServer()   # create a listen thread
+    lst.run_server() # then start
 
 
 def create_app(test_config=None):
