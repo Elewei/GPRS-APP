@@ -29,8 +29,6 @@ def read_data(device_data):
     timer = threading.Timer(1, read_data, args=device_data)
     timer.start()
 
-    return device_data
-
 
 @bp.route('/')
 def index():
@@ -43,7 +41,7 @@ def index():
         'dianliang': '90'
     }
 
-    timer = threading.Timer(1, read_data, args=device_data)
+    timer = threading.Timer(1, read_data, args=(device_data))
     timer.start()
 
     return render_template('index.html', data = device_data)
