@@ -1,4 +1,5 @@
 import functools
+import threading
 import os, time, sys
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
@@ -6,6 +7,29 @@ from flask import (
 
 
 bp = Blueprint('main', __name__)
+
+def read_data(device_data):
+    
+    file_name = os.getcwd() + "/data.txt"
+    with open(file_name, 'r') as f:
+        lines = f.readlines()
+        last_line = lines[-1] #取最后一行
+        print('last line:')
+        str_data = last_line.split(',')
+        print('Str Data: ')
+        print(str_data)
+        device_data['id'] = str_data[0]
+        device_data['device_id'] = str_data[1]
+        device_data['location'] = str_data[2]
+        device_data['tantou_wendu'] = str_data[3]
+        device_data['jiechu_wendu'] = str_data[-2]
+        device_data['dianliang'] = str_data[-1]
+
+    global timer
+    timer = threading.Timer(1, read_data, args=device_data)
+    timer.start()
+
+    return device_data
 
 
 @bp.route('/')
@@ -19,20 +43,7 @@ def index():
         'dianliang': '90'
     }
 
-    file_name = os.getcwd() + "/data.txt"
-    with open(file_name, 'r') as f:
-        
-        lines = f.readlines()
-        last_line = lines[-1] #取最后一行
-        print('last line:')
-        str_data = last_line.split(',')
-        print('Str Data: ')
-        print(str_data)
-        device_data['id'] = str_data[0]
-        device_data['device_id'] = str_data[1]
-        device_data['location'] = str_data[2]
-        device_data['tantou_wendu'] = str_data[3]
-        device_data['jiechu_wendu'] = str_data[4]
-        device_data['dianliang'] = str_data[-1]
+    timer = threading.Timer(1, read_data, args=device_data)
+    timer.start()
 
     return render_template('index.html', data = device_data)
