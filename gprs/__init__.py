@@ -51,11 +51,11 @@ class SocketServer:
                     else:
                         str = format(read_data.rstrip()) + '\n'
                         print(str)
-                        pipe_name = os.getcwd() + "/data"
-                        if not os.path.exists(pipe_name):
-                            os.mkfifo(pipe_name) 
-                        pipeout = os.open(pipe_name, os.O_WRONLY)
-                        os.write(pipeout, str)
+                        file_name = os.getcwd() + "/data"
+                        fp_w = open(file_name, 'a')
+                        fp_w.write(str)
+                        fp_w.flush()
+
             else:
                 print("No client is connected, SocketServer can't receive data")
                 stop = True

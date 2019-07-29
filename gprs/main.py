@@ -19,12 +19,11 @@ def index():
         'dianliang': '90'
     }
 
-    pipe_name = os.getcwd() + "/data"
-    if not os.path.exists(pipe_name):
-        os.mkfifo(pipe_name) 
-    pipein = open(pipe_name, 'r')
-    while True:
-        line = pipein.readline()[:-1]
-        print (line)
+    file_name = os.getcwd() + "/data"
+    fp_r = open(file_name, 'r')
+    line_r = fp_r.readline() 
+    if line_r != '':
+        print(line_r)
+        fp_r.seek(0,2)
 
     return render_template('index.html', data = device_data)
