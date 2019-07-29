@@ -49,9 +49,12 @@ class SocketServer:
                         print('{} closed the socket.'.format(client_addr))
                         stop = True
                     else:
-                        print('>>> Received: {}'.format(read_data.rstrip()))
-                        f = open("data.txt"，"a+")
-                        f.write(format(read_data.rstrip()))
+                        str = format(read_data.rstrip()) + '\n'
+                        bytes.decode(str)
+                        print(str)
+                        filepath = os.getcwd() + "/data.txt"
+                        f = open(filepath, "a+")
+                        f.write(str)
                         f.close()
             else:
                 print("No client is connected, SocketServer can't receive data")
