@@ -49,7 +49,7 @@ class SocketServer:
                         print('{} closed the socket.'.format(client_addr))
                         stop = True
                     else:
-                        str = format(read_data.rstrip()) + '\n'
+                        str = format(read_data.decode('utf-8').rstrip()) + '\n'
                         print(str)
                         file_name = os.getcwd() + "/data.txt"
                         fp_w = open(file_name, 'a+')

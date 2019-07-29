@@ -21,8 +21,17 @@ def index():
 
     file_name = os.getcwd() + "/data.txt"
     with open(file_name, 'r') as f:
+        lines = f.readlines()
         last_line = lines[-1] #取最后一行
         print('last line:')
-        print(last_line)
+        str_data = last_line.split(',')
+        print('Str Data: ')
+        print(str_data)
+        device_data.id = str_data[0]
+        device_data.device_id = str_data[1]
+        device_data.location = str_data[2]
+        device_data.tantou_wendu = str_data[3]
+        device_data.jiechu_wendu = str_data[4]
+        device_data.dianliang = str_data[-1]
 
     return render_template('index.html', data = device_data)
