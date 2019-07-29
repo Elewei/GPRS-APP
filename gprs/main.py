@@ -26,7 +26,7 @@ def read_data(device_data):
         device_data['dianliang'] = str_data[-1]
 
     global timer
-    timer = threading.Timer(1, read_data, args=device_data)
+    timer = threading.Timer(1, read_data, args=(device_data))
     timer.start()
 
 
