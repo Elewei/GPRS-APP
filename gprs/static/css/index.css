@@ -47,14 +47,11 @@
 .user-home {
   width: 75px;
   height: 75px;
-  #background-color: grey;
-  text-align: center;
-  margin-left: 40px;
+  margin-left: 50px;
 }
 
-.logo {
+#logo {
   width: 75px;
-  height: 75px;
 }
 
 
