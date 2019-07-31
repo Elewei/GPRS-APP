@@ -1,8 +1,19 @@
 $(document).ready(() => {
   // Redraw table every second
-  setInterval( function () {
-      console.log("refresh data\n");
-      $("#device-data").load(location.href+"#device-data");
-  }, 20000 );
+  
 };
 
+
+
+
+function addLoadEvent(func) {
+  var oldonload = window.onload;
+  if (typeof window.onload != 'function') {
+    window.onload = func;
+  } else {  
+    window.onload = function() {
+      oldonload();
+      func();
+    }
+  }
+}
