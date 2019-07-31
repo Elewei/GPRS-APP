@@ -1,7 +1,7 @@
 $(document).ready(() => {
   // Redraw table every second
   
-};
+});
 
 
 
