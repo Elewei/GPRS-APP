@@ -2,6 +2,7 @@ import os, time, sys
 import threading
 import select
 import socket
+import codecs
 from multiprocessing import Process
 from flask import Flask
 from . import main
@@ -52,7 +53,7 @@ class SocketServer:
                         str = format(read_data.decode('utf-8').rstrip()) + '\n'
                         print(str)
                         file_name = os.getcwd() + "/data.txt"
-                        fp_w = open(file_name, 'a+')
+                        fp_w = open(file_name, 'a+', encoding= u'utf-8',errors='ignore')
                         fp_w.write(str)
 
             else:
