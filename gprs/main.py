@@ -16,6 +16,7 @@ device_data = {
     'tantou_wendu': '32.5',
     'jiechu_wendu' : '40.2',
     'dianliang': '90'
+    'status': 1
 }
 
 
@@ -29,12 +30,25 @@ def read_data():
         str_data = last_line.split(',')
         print('Str Data: ')
         print(str_data)
-        device_data['id'] = str_data[0]
-        device_data['device_id'] = str_data[1]
-        device_data['location'] = str_data[3] + '.' + str_data[4]
-        device_data['tantou_wendu'] = str_data[-3]
-        device_data['jiechu_wendu'] = str_data[-2]
-        device_data['dianliang'] = str_data[-1]
+
+        if str_data[0] is 'quit':
+        	last_line = lines[-2] #取最后第二行
+        	str_data = last_line.split(',')
+ 	        device_data['id'] = str_data[0]
+	        device_data['device_id'] = str_data[1]
+	        device_data['location'] = str_data[3] + '.' + str_data[4]
+	        device_data['tantou_wendu'] = str_data[-3]
+	        device_data['jiechu_wendu'] = str_data[-2]
+	        device_data['dianliang'] = str_data[-1]  
+	        device_data['status'] = 0     	
+        else:
+	        device_data['id'] = str_data[0]
+	        device_data['device_id'] = str_data[1]
+	        device_data['location'] = str_data[3] + '.' + str_data[4]
+	        device_data['tantou_wendu'] = str_data[-3]
+	        device_data['jiechu_wendu'] = str_data[-2]
+	        device_data['dianliang'] = str_data[-1]
+	        device_data['status'] = 1
 
     global timer
     timer = threading.Timer(5, read_data)

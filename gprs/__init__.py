@@ -42,7 +42,7 @@ class SocketServer:
                 except select.error:
                     print('Select() failed on socket with {}'.format(client_addr))
                     return 1
- 
+                
                 if len(rdy_read) > 0:
                     read_data = client_sock.recv(255)
                     # Check if socket has been closed
@@ -52,10 +52,10 @@ class SocketServer:
                     else:
                         str = format(read_data.decode('utf-8').rstrip()) + '\n'
                         print(str)
-
                         file_name = os.getcwd() + "/data.txt"
                         fp_w = open(file_name, 'a+', encoding= u'utf-8',errors='ignore')
                         fp_w.write(str)
+                        fp_w.close(file_name)
                         time.sleep(2)
                         client_sock.send(bytes('turn on','UTF-8'))
 
@@ -74,6 +74,11 @@ class SocketServer:
 def start_server():
     lst = SocketServer()   # create a listen thread
     lst.run_server() # then start
+    file_name = os.getcwd() + "/data.txt"
+    fp_w = open(file_name, 'a+', encoding= u'utf-8',errors='ignore')
+    fp_w.write('quit')
+    fp_w.close(file_name)  
+
 
 
 def create_app(test_config=None):

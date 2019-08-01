@@ -220,6 +220,17 @@ table,td {
   display: inline-block;
 }
 
+.button-status-off {
+  width: 25px;
+  height: 25px;
+  background-color: #f44336; /* Green */
+  border: none;
+  border-radius: 50%;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
 
 
 

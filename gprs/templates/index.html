@@ -67,7 +67,12 @@
 					<button id="open" class="button-operation-on" type="button">开</button>
 				</td>
 				<td>
-					<button id="open-status" class="button-status-on" type="button"></button>
+				    {% if data.status == 0 %}
+				    	<button id="open-status" class="button-status-off" type="button"></button>
+				    {% else %}
+				    	<button id="open-status" class="button-status-on" type="button"></button>
+				    {% endif %}
+					
 				</td>
 			</tr>
 		</table>	
