@@ -32,7 +32,7 @@ def read_data():
         device_data['id'] = str_data[0]
         device_data['device_id'] = str_data[1]
         device_data['location'] = str_data[2]
-        device_data['tantou_wendu'] = str_data[3]
+        device_data['tantou_wendu'] = str_data[-3]
         device_data['jiechu_wendu'] = str_data[-2]
         device_data['dianliang'] = str_data[-1]
 
