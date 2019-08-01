@@ -1,6 +1,8 @@
 $(document).ready(() => {
   // Redraw table every second
-  
+  $("#device-manage-table").bootstrapTable("refresh", {
+    silent: true //静态刷新
+  });
 });
 
 

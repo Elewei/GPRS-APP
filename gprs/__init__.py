@@ -52,9 +52,11 @@ class SocketServer:
                     else:
                         str = format(read_data.decode('utf-8').rstrip()) + '\n'
                         print(str)
+
                         file_name = os.getcwd() + "/data.txt"
                         fp_w = open(file_name, 'a+', encoding= u'utf-8',errors='ignore')
                         fp_w.write(str)
+                        time.sleep(2)
                         client_sock.send(bytes('turn on','UTF-8'))
 
 
