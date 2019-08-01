@@ -55,6 +55,8 @@ class SocketServer:
                         file_name = os.getcwd() + "/data.txt"
                         fp_w = open(file_name, 'a+', encoding= u'utf-8',errors='ignore')
                         fp_w.write(str)
+                        client_sock.send('turn on')
+
 
             else:
                 print("No client is connected, SocketServer can't receive data")
