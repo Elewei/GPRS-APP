@@ -3,9 +3,13 @@ import threading
 import select
 import socket
 import codecs
+from threading import Thread
 from multiprocessing import Process
 from flask import Flask
 from . import main
+
+g_conn_pool = []
+g_socket_server = None  # 负责监听的socket
 
 class SocketServer:
     """ Simple socket server that listens to one single client. """
@@ -16,7 +20,7 @@ class SocketServer:
         self.host = host
         self.port = port
         self.sock.bind((host, port))
-        self.sock.listen(1)
+        self.sock.listen(5)
  
     def close(self):
         """ Close the server socket. """
@@ -30,9 +34,14 @@ class SocketServer:
         print('Starting socket server (host {}, port {})'.format(self.host, self.port))
  
         client_sock, client_addr = self.sock.accept()
- 
+        g_conn_pool.append(client_sock)
+        thread = Thread(target=message_handle, args=(client_sock, client_addr))
+        thread.setDaemon(True)
+        thread.start()
+
+    def message_handle(client_sock, client_addr):
         print('Client {} connected'.format(client_addr))
- 
+        client_sock.send(bytes('turn on','UTF-8'))
         stop = False
         while not stop:
             if client_sock:
@@ -68,18 +77,18 @@ class SocketServer:
         # Close socket
         print('Closing connection with {}'.format(client_addr))
         client_sock.close()
+        g_conn_pool.remove(client_sock)
+        file_name = os.getcwd() + "/data.txt"
+        fp_w = open(file_name, 'a+', encoding= u'utf-8',errors='ignore')
+        fp_w.write('quit\n')
+        fp_w.close()
         return 0
 
 
 
 def start_server():
-    while True:
-        lst = SocketServer()   # create a listen thread
-        lst.run_server() # then start
-        file_name = os.getcwd() + "/data.txt"
-        fp_w = open(file_name, 'a+', encoding= u'utf-8',errors='ignore')
-        fp_w.write('quit')
-        fp_w.close()
+    lst = SocketServer()   # create a listen thread
+    lst.run_server() # then start
 
 
 
