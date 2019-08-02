@@ -55,7 +55,7 @@ class SocketServer:
                         file_name = os.getcwd() + "/data.txt"
                         fp_w = open(file_name, 'a+', encoding= u'utf-8',errors='ignore')
                         fp_w.write(str)
-                        fp_w.close(file_name)
+                        fp_w.close()
                         time.sleep(2)
                         client_sock.send(bytes('turn on','UTF-8'))
 
@@ -77,7 +77,7 @@ def start_server():
     file_name = os.getcwd() + "/data.txt"
     fp_w = open(file_name, 'a+', encoding= u'utf-8',errors='ignore')
     fp_w.write('quit')
-    fp_w.close(file_name)  
+    fp_w.close()  
 
 
 
