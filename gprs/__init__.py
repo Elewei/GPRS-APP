@@ -10,45 +10,40 @@ from . import main
 
 g_conn_pool = []
 g_socket_server = None  # 负责监听的socket
+ADDRESS = ('0.0.0.0', 12138)  # 绑定地址
 
 
-def message_handle(client_sock, client_addr):
-    print('Client {} connected'.format(client_addr))
+""" Simple socket server that listens to one single client. """
+def init():
+    """ Initialize the server with a host and port to listen to. """
+    global g_socket_server
+    g_socket_server = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
+    g_socket_server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    g_socket_server.bind(ADDRESS)
+    g_socket_server.listen(5)
+    print('Server Port 12138 is up..')
+
+
+def message_handle(client_sock):
     client_sock.send(bytes('turn on','UTF-8'))
-    stop = False
-    while not stop:
-        if client_sock:
-            # Check if the client is still connected and if data is available:
-            try:
-                rdy_read, rdy_write, sock_err = select.select([client_sock,], [], [])
-            except select.error:
-                print('Select() failed on socket with {}'.format(client_addr))
-                return 1
-            
-            if len(rdy_read) > 0:
-                read_data = client_sock.recv(255)
-                # Check if socket has been closed
-                if len(read_data) == 0:
-                    print('{} closed the socket.'.format(client_addr))
-                    stop = True
-                else:
-                    str = format(read_data.decode('utf-8').rstrip()) + '\n'
-                    print(str)
-                    file_name = os.getcwd() + "/data.txt"
-                    fp_w = open(file_name, 'a+', encoding= u'utf-8',errors='ignore')
-                    fp_w.write(str)
-                    fp_w.close()
-                    time.sleep(2)
-                    client_sock.send(bytes('turn on','UTF-8'))
-
-
+    while True:
+        read_data = client_sock.recv(255)
+        # Check if socket has been closed
+        if len(read_data) == 0:
+            print('{} closed the socket.'.format(client_addr))
+            break;
+        
         else:
-            print("No client is connected, SocketServer can't receive data")
-            stop = True
+            str = format(read_data.decode('utf-8').rstrip()) + '\n'
+            print(str)
+            file_name = os.getcwd() + "/data.txt"
+            fp_w = open(file_name, 'a+', encoding= u'utf-8',errors='ignore')
+            fp_w.write(str)
+            fp_w.close()
+            time.sleep(2)
+            client_sock.send(bytes('turn on','UTF-8'))
     
-    client_sock.send(bytes('turn on','UTF-8'))
-    # Close socket
-    print('Closing connection with {}'.format(client_addr))
+    client_sock.send(bytes('turn off socket','UTF-8'))
     client_sock.close()
     g_conn_pool.remove(client_sock)
     file_name = os.getcwd() + "/data.txt"
@@ -56,42 +51,30 @@ def message_handle(client_sock, client_addr):
     fp_w.write('quit\n')
     fp_w.close()
     return 0
-        
 
-class SocketServer:
-    """ Simple socket server that listens to one single client. """
-    def __init__(self, host = '0.0.0.0', port = 12138):
-        """ Initialize the server with a host and port to listen to. """
-        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        self.host = host
-        self.port = port
-        self.sock.bind((host, port))
-        self.sock.listen(5)
- 
-    def close(self):
-        """ Close the server socket. """
-        print('Closing server socket (host {}, port {})'.format(self.host, self.port))
-        if self.sock:
-            self.sock.close()
-            self.sock = None
- 
 
-    def run_server(self):
-        """ Accept and handle an incoming connection. """
-        print('Starting socket server (host {}, port {})'.format(self.host, self.port))
- 
-        client_sock, client_addr = self.sock.accept()
-        g_conn_pool.append(client_sock)
-        thread = Thread(target=message_handle, args=(client_sock, client_addr))
+
+def accept_client():
+    """
+    接收新连接
+    """
+    while True:
+        client, _ = g_socket_server.accept()  # 阻塞，等待客户端连接
+        # 加入连接池
+        g_conn_pool.append(client)
+        # 给每个客户端创建一个独立的线程进行管理
+        thread = Thread(target=message_handle, args=(client,))
+        # 设置成守护线程
         thread.setDaemon(True)
         thread.start()
 
 
-
 def start_server():
-    lst = SocketServer()   # create a listen thread
-    lst.run_server() # then start
+    init()
+    # 新开一个线程，用于接收新连接
+    thread = Thread(target=accept_client)
+    thread.setDaemon(True)
+    thread.start()
 
 
 
