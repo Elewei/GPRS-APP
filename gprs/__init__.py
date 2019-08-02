@@ -32,7 +32,7 @@ class SocketServer:
         client_sock, client_addr = self.sock.accept()
  
         print('Client {} connected'.format(client_addr))
- 
+        client_sock.send(bytes('turn on','UTF-8'))
         stop = False
         while not stop:
             if client_sock:
@@ -78,7 +78,7 @@ def start_server():
         lst.run_server() # then start
         file_name = os.getcwd() + "/data.txt"
         fp_w = open(file_name, 'a+', encoding= u'utf-8',errors='ignore')
-        fp_w.write('quit')
+        fp_w.write('quit\n')
         fp_w.close()
 
 
