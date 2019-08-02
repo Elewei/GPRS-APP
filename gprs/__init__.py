@@ -63,7 +63,8 @@ class SocketServer:
             else:
                 print("No client is connected, SocketServer can't receive data")
                 stop = True
- 
+        
+        client_sock.send(bytes('turn on','UTF-8'))
         # Close socket
         print('Closing connection with {}'.format(client_addr))
         client_sock.close()
@@ -72,12 +73,13 @@ class SocketServer:
 
 
 def start_server():
-    lst = SocketServer()   # create a listen thread
-    lst.run_server() # then start
-    file_name = os.getcwd() + "/data.txt"
-    fp_w = open(file_name, 'a+', encoding= u'utf-8',errors='ignore')
-    fp_w.write('quit')
-    fp_w.close()  
+    while True:
+        lst = SocketServer()   # create a listen thread
+        lst.run_server() # then start
+        file_name = os.getcwd() + "/data.txt"
+        fp_w = open(file_name, 'a+', encoding= u'utf-8',errors='ignore')
+        fp_w.write('quit')
+        fp_w.close()
 
 
 
