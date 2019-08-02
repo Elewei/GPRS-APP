@@ -12,7 +12,6 @@ g_conn_pool = []
 g_socket_server = None  # 负责监听的socket
 ADDRESS = ('0.0.0.0', 12138)  # 绑定地址
 
-
 """ Simple socket server that listens to one single client. """
 def init():
     """ Initialize the server with a host and port to listen to. """
@@ -60,12 +59,11 @@ def accept_client():
     """
     while True:
         client, _ = g_socket_server.accept()  # 阻塞，等待客户端连接
+        print('等待客户端连接')
         # 加入连接池
         g_conn_pool.append(client)
         # 给每个客户端创建一个独立的线程进行管理
         thread = Thread(target=message_handle, args=(client,))
-        # 设置成守护线程
-        thread.setDaemon(True)
         thread.start()
 
 
@@ -73,7 +71,6 @@ def start_server():
     init()
     # 新开一个线程，用于接收新连接
     thread = Thread(target=accept_client)
-    thread.setDaemon(True)
     thread.start()
 
 
