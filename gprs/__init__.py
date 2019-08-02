@@ -3,75 +3,78 @@ import threading
 import select
 import socket
 import codecs
+import queue
 from threading import Thread
 from multiprocessing import Process
 from flask import Flask
 from . import main
 
-g_conn_pool = []
-g_socket_server = None  # 负责监听的socket
-ADDRESS = ('0.0.0.0', 12138)  # 绑定地址
 
-""" Simple socket server that listens to one single client. """
-def init():
-    """ Initialize the server with a host and port to listen to. """
-    global g_socket_server
-    g_socket_server = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
-    g_socket_server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    g_socket_server.bind(ADDRESS)
-    g_socket_server.listen(1)
-    print('Server Port 12138 is up..')
-
-
-def message_handle(client_sock):
-    client_sock.send(bytes('turn on','UTF-8'))
-    while True:
-        read_data = client_sock.recv(255)
-        # Check if socket has been closed
-        if len(read_data) == 0:
-            print('{} closed the socket.'.format(client_addr))
-            break;
-        
-        else:
-            str = format(read_data.decode('utf-8').rstrip()) + '\n'
-            print(str)
-            file_name = os.getcwd() + "/data.txt"
-            fp_w = open(file_name, 'a+', encoding= u'utf-8',errors='ignore')
-            fp_w.write(str)
-            fp_w.close()
-            time.sleep(2)
-            client_sock.send(bytes('turn on','UTF-8'))
-    
-    client_sock.send(bytes('turn off socket','UTF-8'))
-    client_sock.close()
-    g_conn_pool.remove(client_sock)
-    file_name = os.getcwd() + "/data.txt"
-    fp_w = open(file_name, 'a+', encoding= u'utf-8',errors='ignore')
-    fp_w.write('quit\n')
-    fp_w.close()
-    return 0
-
-
-
-def accept_client():
-    """
-    接收新连接
-    """
-    while True:
-        client, _ = g_socket_server.accept()
-        print('等待客户端连接')
-        # 加入连接池
-        g_conn_pool.append(client)
-        # 给每个客户端创建一个独立的线程进行管理
-        thread = Thread(target=message_handle, args=(client,))
-        thread.start()
+inputs = []
+outputs = []
+message_queues = {}
 
 
 def start_server():
-    init()
-    # 新开一个线程，用于接收新连接
-    thread = Thread(target=accept_client)
-    thread.start()
+    server = socket.socket()
+    server.setblocking(0)
+    server_addr = ('0.0.0.0',12138)
+    print('starting up on %s port %s' % server_addr)
+
+    try:
+        server.bind(server_addr)
+    except:
+        time.sleep(10)
+        server.bind(server_addr)
+
+    server.listen(5)
+
+    while True:
+        print("waiting for next event...")
+
+        readable, writeable, exeptional = select.select(inputs,outputs,inputs) 
+
+        for s in readable: 
+            data = s.recv(1024)
+            if data:
+                print("收到来自[%s]的数据:" % s.getpeername()[0], data)
+                message_queues[s].put(data) #收到的数据先放到queue里,一会返回给客户端
+                if s not  in outputs:
+                    outputs.append(s) #为了不影响处理与其它客户端的连接 , 这里不立刻返回数据给客户端
+
+
+            else:#如果收不到data代表什么呢? 代表客户端断开了呀
+                print("客户端断开了",s)
+
+                if s in outputs:
+                    outputs.remove(s) #清理已断开的连接
+
+                inputs.remove(s) #清理已断开的连接
+
+                del message_queues[s] ##清理已断开的连接
+
+
+        for s in writeable:
+            try :
+                next_msg = message_queues[s].get_nowait()
+
+            except queue.Empty:
+                print("client [%s]" %s.getpeername()[0], "queue is empty..")
+                outputs.remove(s)
+
+            else:
+                print("sending msg to [%s]"%s.getpeername()[0], next_msg)
+                s.send(next_msg.upper())
+
+
+        for s in exeptional:
+            print("handling exception for ",s.getpeername())
+            inputs.remove(s)
+            if s in outputs:
+                outputs.remove(s)
+            s.close()
+
+            del message_queues[s]
 
 
 
