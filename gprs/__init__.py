@@ -87,8 +87,18 @@ class SocketServer:
 
 
 def start_server():
+<<<<<<< HEAD
     lst = SocketServer()   # create a listen thread
     lst.run_server() # then start
+=======
+    while True:
+        lst = SocketServer()   # create a listen thread
+        lst.run_server() # then start
+        file_name = os.getcwd() + "/data.txt"
+        fp_w = open(file_name, 'a+', encoding= u'utf-8',errors='ignore')
+        fp_w.write('quit\n')
+        fp_w.close()
+>>>>>>> 0a54ac3a449ed2bc3ab37f307d18a0596a3fbdc9
 
 
 
