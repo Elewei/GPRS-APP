@@ -29,15 +29,6 @@ class SocketServer:
             self.sock.close()
             self.sock = None
  
-    def run_server(self):
-        """ Accept and handle an incoming connection. """
-        print('Starting socket server (host {}, port {})'.format(self.host, self.port))
- 
-        client_sock, client_addr = self.sock.accept()
-        g_conn_pool.append(client_sock)
-        thread = Thread(target=message_handle, args=(client_sock, client_addr))
-        thread.setDaemon(True)
-        thread.start()
 
     def message_handle(client_sock, client_addr):
         print('Client {} connected'.format(client_addr))
@@ -84,21 +75,21 @@ class SocketServer:
         fp_w.close()
         return 0
 
+    def run_server(self):
+        """ Accept and handle an incoming connection. """
+        print('Starting socket server (host {}, port {})'.format(self.host, self.port))
+ 
+        client_sock, client_addr = self.sock.accept()
+        g_conn_pool.append(client_sock)
+        thread = Thread(target=message_handle, args=(client_sock, client_addr))
+        thread.setDaemon(True)
+        thread.start()
+
 
 
 def start_server():
-<<<<<<< HEAD
     lst = SocketServer()   # create a listen thread
     lst.run_server() # then start
-=======
-    while True:
-        lst = SocketServer()   # create a listen thread
-        lst.run_server() # then start
-        file_name = os.getcwd() + "/data.txt"
-        fp_w = open(file_name, 'a+', encoding= u'utf-8',errors='ignore')
-        fp_w.write('quit\n')
-        fp_w.close()
->>>>>>> 0a54ac3a449ed2bc3ab37f307d18a0596a3fbdc9
 
 
 
