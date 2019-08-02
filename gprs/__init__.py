@@ -19,7 +19,7 @@ def init():
     g_socket_server = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
     g_socket_server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     g_socket_server.bind(ADDRESS)
-    g_socket_server.listen(5)
+    g_socket_server.listen(1)
     print('Server Port 12138 is up..')
 
 
@@ -58,7 +58,7 @@ def accept_client():
     接收新连接
     """
     while True:
-        client, _ = g_socket_server.accept()  # 阻塞，等待客户端连接
+        client, _ = g_socket_server.accept()
         print('等待客户端连接')
         # 加入连接池
         g_conn_pool.append(client)
