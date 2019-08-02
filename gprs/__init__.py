@@ -24,8 +24,11 @@ def start_server():
     try:
         server.bind(server_addr)
     except:
-        time.sleep(10)
-        server.bind(server_addr)
+        time.sleep(15)
+        try:
+            server.bind(server_addr)
+        except:
+            time.sleep(15)
 
     server.listen(5)
 
