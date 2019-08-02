@@ -11,6 +11,53 @@ from . import main
 g_conn_pool = []
 g_socket_server = None  # 负责监听的socket
 
+
+def message_handle(client_sock, client_addr):
+    print('Client {} connected'.format(client_addr))
+    client_sock.send(bytes('turn on','UTF-8'))
+    stop = False
+    while not stop:
+        if client_sock:
+            # Check if the client is still connected and if data is available:
+            try:
+                rdy_read, rdy_write, sock_err = select.select([client_sock,], [], [])
+            except select.error:
+                print('Select() failed on socket with {}'.format(client_addr))
+                return 1
+            
+            if len(rdy_read) > 0:
+                read_data = client_sock.recv(255)
+                # Check if socket has been closed
+                if len(read_data) == 0:
+                    print('{} closed the socket.'.format(client_addr))
+                    stop = True
+                else:
+                    str = format(read_data.decode('utf-8').rstrip()) + '\n'
+                    print(str)
+                    file_name = os.getcwd() + "/data.txt"
+                    fp_w = open(file_name, 'a+', encoding= u'utf-8',errors='ignore')
+                    fp_w.write(str)
+                    fp_w.close()
+                    time.sleep(2)
+                    client_sock.send(bytes('turn on','UTF-8'))
+
+
+        else:
+            print("No client is connected, SocketServer can't receive data")
+            stop = True
+    
+    client_sock.send(bytes('turn on','UTF-8'))
+    # Close socket
+    print('Closing connection with {}'.format(client_addr))
+    client_sock.close()
+    g_conn_pool.remove(client_sock)
+    file_name = os.getcwd() + "/data.txt"
+    fp_w = open(file_name, 'a+', encoding= u'utf-8',errors='ignore')
+    fp_w.write('quit\n')
+    fp_w.close()
+    return 0
+        
+
 class SocketServer:
     """ Simple socket server that listens to one single client. """
     def __init__(self, host = '0.0.0.0', port = 12138):
@@ -29,51 +76,6 @@ class SocketServer:
             self.sock.close()
             self.sock = None
  
-
-    def message_handle(client_sock, client_addr):
-        print('Client {} connected'.format(client_addr))
-        client_sock.send(bytes('turn on','UTF-8'))
-        stop = False
-        while not stop:
-            if client_sock:
-                # Check if the client is still connected and if data is available:
-                try:
-                    rdy_read, rdy_write, sock_err = select.select([client_sock,], [], [])
-                except select.error:
-                    print('Select() failed on socket with {}'.format(client_addr))
-                    return 1
-                
-                if len(rdy_read) > 0:
-                    read_data = client_sock.recv(255)
-                    # Check if socket has been closed
-                    if len(read_data) == 0:
-                        print('{} closed the socket.'.format(client_addr))
-                        stop = True
-                    else:
-                        str = format(read_data.decode('utf-8').rstrip()) + '\n'
-                        print(str)
-                        file_name = os.getcwd() + "/data.txt"
-                        fp_w = open(file_name, 'a+', encoding= u'utf-8',errors='ignore')
-                        fp_w.write(str)
-                        fp_w.close()
-                        time.sleep(2)
-                        client_sock.send(bytes('turn on','UTF-8'))
-
-
-            else:
-                print("No client is connected, SocketServer can't receive data")
-                stop = True
-        
-        client_sock.send(bytes('turn on','UTF-8'))
-        # Close socket
-        print('Closing connection with {}'.format(client_addr))
-        client_sock.close()
-        g_conn_pool.remove(client_sock)
-        file_name = os.getcwd() + "/data.txt"
-        fp_w = open(file_name, 'a+', encoding= u'utf-8',errors='ignore')
-        fp_w.write('quit\n')
-        fp_w.close()
-        return 0
 
     def run_server(self):
         """ Accept and handle an incoming connection. """
