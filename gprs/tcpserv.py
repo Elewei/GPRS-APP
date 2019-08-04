@@ -21,11 +21,11 @@ def threaded(c):
 
     str_data = data.decode().strip()
     if str_data == 'turn-on':
-      c.send(data)
+      c.send(bytes('turn-on','UTF-8'))
       print('turn-on the device\n')
 
     elif str_data == 'turn-off':
-      c.send(data)
+      c.send(bytes('turn-off','UTF-8'))
       print('turn-off the device\n')
     else:
       print(str_data)
