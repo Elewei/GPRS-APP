@@ -48,7 +48,7 @@ def read_data():
         print('Str Data: ')
         print(str_data)
 
-        if str_data[0] == 'quit':
+        if len(str_data) == 2:
             last_2_line = lines[-2] #取最后第二行
             str_2_data = last_2_line.split(',')
             device_data['id'] = str_2_data[0]

@@ -41,6 +41,10 @@ def threaded(c):
         device_status = 0
       print('turn-off the device\n')
     else:
+      file_name = os.getcwd() + "/data.txt"
+      fp_w = open(file_name, 'a+', encoding= u'utf-8',errors='ignore')
+      fp_w.write(str_data)
+      fp_w.close()
       print(str_data)
 
     # send back reversed string to client 
