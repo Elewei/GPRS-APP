@@ -5,7 +5,7 @@ import socket
 from _thread import *
 import threading 
 
-device_status = 0
+device_status = []
 
 #print_lock = threading.Lock() 
 
@@ -28,7 +28,8 @@ def threaded(c):
         device_status = 1
         break
       c.send(bytes('turn-on','UTF-8'))
-      device_status = 0
+      if device_status == 1:
+        device_status = 0
       print('turn-on the device\n')
 
     elif str_data == 'turn-off' or  device_status == -1:
@@ -36,7 +37,9 @@ def threaded(c):
         device_status = -1
         break
       c.send(bytes('turn-off','UTF-8'))
-      device_status = 0
+      
+      if device_status == -1:
+        device_status = 0
       print('turn-off the device\n')
     else:
       print(str_data)
