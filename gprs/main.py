@@ -1,8 +1,9 @@
 import functools
 import threading
-import os, time, sys
+import os, time, sys, json
+import socket
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session, url_for
+    Blueprint, flash, g, redirect, render_template, request, session, url_for, jsonify
 )
 
 
@@ -18,6 +19,22 @@ device_data = {
     'dianliang': '90',
     'status': 0
 }
+
+def send(data):
+    host_ip, server_port = "127.0.0.1", 12138
+    tcp_client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    try:
+        # Establish connection to TCP server and exchange data
+        tcp_client.connect((host_ip, server_port))
+        tcp_client.sendall(data.encode())
+
+        # Read data from the TCP server and close the connection
+        received = tcp_client.recv(1024)
+    finally:
+        tcp_client.close()
+
+    print ("Bytes Sent:     {}".format(data))
+    print ("Bytes Received: {}".format(received.decode()))    
 
 
 def read_data():
@@ -55,10 +72,32 @@ def read_data():
     timer.start()
 
 
+
+
 @bp.route('/')
 def index():
 
-    timer = threading.Timer(1, read_data)
-    timer.start()
+    #timer = threading.Timer(1, read_data)
+    #timer.start()
 
     return render_template('index.html', data = device_data)
+
+
+
+
+@bp.route('/off')
+def off():
+    print('In Flask OFF funn\n')
+    data = 'turn-off'
+    send(data)
+    return jsonify(result=0)
+
+
+
+
+@bp.route('/on')
+def on():
+    print('In Flask ON funn\n')
+    data = 'turn-on'
+    send(data)
+    return jsonify(result=0)
