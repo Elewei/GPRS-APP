@@ -27,7 +27,7 @@ def threaded(c):
       if str_data == 'turn-on':
         device_status = 1
         break
-      c.send(bytes('turn-on','UTF-8'))
+      c.send(bytes('turn-on\n','UTF-8'))
       if device_status == 1:
         device_status = 0
       print('turn-on the device\n')
@@ -36,14 +36,13 @@ def threaded(c):
       if str_data == 'turn-off':
         device_status = -1
         break
-      c.send(bytes('turn-off','UTF-8'))
-      
+      c.send(bytes('turn-off\n','UTF-8'))
       if device_status == -1:
         device_status = 0
       print('turn-off the device\n')
     else:
       print(str_data)
-    
+
     # send back reversed string to client 
     #c.send(data)
 
