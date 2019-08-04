@@ -24,15 +24,17 @@ def threaded(c):
 
     str_data = data.decode().strip()
     if str_data == 'turn-on' or device_status == 1:
-      device_status = 1
+      if str_data == 'turn-on':
+        device_status = 1
+        break
       c.send(bytes('turn-on','UTF-8'))
-      device_status = 0
       print('turn-on the device\n')
 
     elif str_data == 'turn-off' or  device_status == -1:
-      device_status = -1
+      if str_data == 'turn-off':
+        device_status = -1
+        break
       c.send(bytes('turn-off','UTF-8'))
-      device_status = 0
       print('turn-off the device\n')
     else:
       print(str_data)
@@ -61,7 +63,7 @@ def Main():
 
   # a forever loop until client wants to exit 
   while True: 
-
+    device_status = 0
     # establish connection with client 
     c, addr = s.accept() 
 
@@ -71,6 +73,7 @@ def Main():
 
     # Start a new thread and return its identifier 
     start_new_thread(threaded, (c,)) 
+
   s.close() 
 
 
