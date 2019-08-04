@@ -11,6 +11,7 @@ device_status = 0
 
 # thread fuction 
 def threaded(c): 
+  global device_status
   while True: 
 
     # data received from client 
