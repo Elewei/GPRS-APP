@@ -5,7 +5,7 @@ import socket
 from _thread import *
 import threading 
 
-print_lock = threading.Lock() 
+#print_lock = threading.Lock() 
 
 # thread fuction 
 def threaded(c): 
@@ -16,7 +16,7 @@ def threaded(c):
     if not data: 
       print('Bye') 
       # lock released on exit 
-      print_lock.release() 
+      #print_lock.release() 
       break
 
     str_data = data.decode().strip()
