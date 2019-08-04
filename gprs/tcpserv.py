@@ -28,6 +28,7 @@ def threaded(c):
         device_status = 1
         break
       c.send(bytes('turn-on','UTF-8'))
+      device_status = 0
       print('turn-on the device\n')
 
     elif str_data == 'turn-off' or  device_status == -1:
@@ -35,6 +36,7 @@ def threaded(c):
         device_status = -1
         break
       c.send(bytes('turn-off','UTF-8'))
+      device_status = 0
       print('turn-off the device\n')
     else:
       print(str_data)
@@ -63,7 +65,6 @@ def Main():
 
   # a forever loop until client wants to exit 
   while True: 
-    device_status = 0
     # establish connection with client 
     c, addr = s.accept() 
 
