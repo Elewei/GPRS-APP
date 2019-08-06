@@ -1,25 +1,25 @@
 $(document).ready(() => {
   $('#open').on('click', ()=>{
     if($('#open').is('.button-operation-on')) {
-      /* device is On, shutdown */
+      /* device is Shutdown, Startup */
       $('#open').addClass('button-operation-off');
       $('#open').removeClass('button-operation-on');
-      $('#open').text('关闭');
-      console.log('Send turn-off to Device\n');
+      $('#open').text('开启');
+      console.log('Send turn-on to Device\n');
 
-    $.getJSON($SCRIPT_ROOT + '/off', {
+    $.getJSON($SCRIPT_ROOT + '/on', {
       status: 0,
     }, function(data) {
       console.log(data.result);
     });
 
     } else {
-      /* device is Off, startup */
+      /* device is On, shutdown */
       $('#open').addClass('button-operation-on');
       $('#open').removeClass('button-operation-off');
-      $('#open').text('开启');
-      console.log('Send turn-on to Device\n');
-      $.getJSON($SCRIPT_ROOT + '/on', {
+      $('#open').text('关闭');
+      console.log('Send turn-off to Device\n');
+      $.getJSON($SCRIPT_ROOT + '/off', {
         status: 0,
       }, function(data) {
         console.log(data.result);
