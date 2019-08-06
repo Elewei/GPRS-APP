@@ -48,7 +48,7 @@ def read_data():
         print('Str Data: ')
         print(str_data)
 
-        if len(str_data) == 2:
+        if len(str_data) != 8:
             device_data['id'] = str_data[0]
             device_data['device_id'] = '-'
             device_data['location'] = '-'

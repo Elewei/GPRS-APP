@@ -10,3 +10,6 @@ flask run
 
 
 
+waitress-serve --listen=*:80 --call 'gprs:create_app' 
+
+
