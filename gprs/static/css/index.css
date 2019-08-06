@@ -186,7 +186,7 @@ table,td {
 
 
 .button-operation-on {
-  background-color: #4CAF50; /* Green */
+  background-color: #f44336; /* Red */
   border: none;
   border-radius: 10%;
   color: white;
@@ -198,7 +198,7 @@ table,td {
 }
 
 .button-operation-off {
-  background-color: #f44336; /* Red */
+  background-color: #4CAF50; /* Green */
   border: none;
   border-radius: 10%;
   color: white;
