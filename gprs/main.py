@@ -50,7 +50,7 @@ def read_data():
 
         if len(str_data) != 8:
             device_data['id'] = str_data[0]
-            device_data['device_id'] = '-'
+            device_data['device_id'] = str_data[1]
             device_data['location'] = '-'
             device_data['tantou_wendu'] = '-'
             device_data['jiechu_wendu'] = '-'
