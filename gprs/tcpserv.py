@@ -4,6 +4,7 @@ import os
 # import thread module 
 from _thread import *
 import threading 
+import time
 
 device_status = []
 
@@ -27,7 +28,9 @@ def threaded(c):
       if str_data == 'turn-on':
         device_status = 1
         break
-      c.send(bytes('turn-on\n','UTF-8'))
+      for i in range(0, 5):
+        time.sleep(2)
+        c.send(bytes('turn-on\n','UTF-8'))
       if device_status == 1:
         device_status = 0
       print('turn-on the device\n')
@@ -36,7 +39,9 @@ def threaded(c):
       if str_data == 'turn-off':
         device_status = -1
         break
-      c.send(bytes('turn-off\n','UTF-8'))
+      for i in range(0, 5):
+        time.sleep(2)
+        c.send(bytes('turn-off\n','UTF-8'))
       if device_status == -1:
         device_status = 0
       print('turn-off the device\n')
