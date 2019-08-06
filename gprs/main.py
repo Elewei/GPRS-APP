@@ -49,14 +49,12 @@ def read_data():
         print(str_data)
 
         if len(str_data) == 2:
-            last_2_line = lines[-2] #取最后第二行
-            str_2_data = last_2_line.split(',')
-            device_data['id'] = str_2_data[0]
-            device_data['device_id'] = str_2_data[1]
-            device_data['location'] = str_2_data[3] + '.' + str_2_data[4]
-            device_data['tantou_wendu'] = str_2_data[-3]
-            device_data['jiechu_wendu'] = str_2_data[-2]
-            device_data['dianliang'] = str_2_data[-1]
+            device_data['id'] = str_data[0]
+            device_data['device_id'] = '-'
+            device_data['location'] = '-'
+            device_data['tantou_wendu'] = '-'
+            device_data['jiechu_wendu'] = '-'
+            device_data['dianliang'] = '-'
             device_data['status'] = 0
         else:
             device_data['id'] = str_data[0]
@@ -77,9 +75,8 @@ def read_data():
 @bp.route('/')
 def index():
 
-    #timer = threading.Timer(1, read_data)
-    #timer.start()
-
+    timer = threading.Timer(1, read_data)
+    timer.start()
     return render_template('index.html', data = device_data)
 
 
