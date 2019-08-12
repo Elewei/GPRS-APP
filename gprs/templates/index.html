@@ -89,12 +89,14 @@
 {% endblock %}
 
 {% block script %}
+  <script type=text/javascript>
+  	$SCRIPT_ROOT = {{ request.script_root | tojson | safe }};
+    var ip_str = {
+		ip:{{ data.remote_addr|tojson }}
+    };
+  </script>
   <script src="{{ url_for('static', filename='js/index.js') }}"></script>
   <script src="{{ url_for('static', filename='js/chinatime.js') }}"></script>
   <script src="{{ url_for('static', filename='js/weather.js') }}"></script>
-  <script type=text/javascript>
-  	$SCRIPT_ROOT = {{ request.script_root | tojson | safe }};
 
-
-  </script>
 {% endblock %}

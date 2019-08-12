@@ -6,7 +6,7 @@
 
 
 function get_weather_info() {
-  var ip = {{ data.remote_addr | tojson }};
+  var ip = ip_str.ip;
   console.log(ip);
   /* 获取天气信息 */
   $.ajax({
