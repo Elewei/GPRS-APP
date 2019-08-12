@@ -8,11 +8,13 @@
 function get_weather_info() {
   var ip = ip_str.ip;
   console.log(ip);
+  url_str = 'https://free-api.heweather.net/s6/weather?location=' + ip + '&key=c3af91c9c649423386bd645f32f5d67f';
+  console.log(url_str);
   /* 获取天气信息 */
   $.ajax({
     type: "get",
     dataType: "json",
-    url: "https://free-api.heweather.net/s6/weather?location=47.103.68.81&key=c3af91c9c649423386bd645f32f5d67f",
+    url: url_str,
     start: function () { console.log("开始获取天气数据了") },
     complete: function () { console.log("获取天气数据完成") },
     success: function (data) {
