@@ -12,12 +12,13 @@ bp = Blueprint('main', __name__)
 
 device_data = {
     'id' : 1,
-    'device_id' : '07:24:4a:4a:6c:22',
-    'location': '38.6518,104.07642',
-    'tantou_wendu': '32.5',
-    'jiechu_wendu' : '40.2',
-    'dianliang': '90',
-    'status': 0
+    'device_id' : '-',
+    'location': '-',
+    'tantou_wendu': '-',
+    'jiechu_wendu' : '-',
+    'dianliang': '-',
+    'status': 0,
+    'remote_addr': ''
 }
 
 def send(data):
@@ -74,7 +75,7 @@ def read_data():
 
 @bp.route('/')
 def index():
-
+    device_data['remote_addr'] = request.remote_addr
     timer = threading.Timer(1, read_data)
     timer.start()
     return render_template('index.html', data = device_data)
