@@ -29,7 +29,7 @@ def threaded(c):
         device_status = 1
         break
       for i in range(0, 5):
-        time.sleep(2)
+        time.sleep(1)
         c.send(bytes('turn-on\n','UTF-8'))
       if device_status == 1:
         device_status = 0
@@ -40,7 +40,7 @@ def threaded(c):
         device_status = -1
         break
       for i in range(0, 5):
-        time.sleep(2)
+        time.sleep(1)
         c.send(bytes('turn-off\n','UTF-8'))
       if device_status == -1:
         device_status = 0
